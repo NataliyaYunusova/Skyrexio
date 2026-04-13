@@ -1,6 +1,6 @@
 package tests;
 
-import org.openqa.selenium.By;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
@@ -10,23 +10,28 @@ public class LoginTest extends BaseTest {
 
     @Test
     public void checkLogin() {
-        driver.get("https://www.saucedemo.com/");
-        driver.findElement(By.cssSelector("[id='user-name']")).sendKeys("standard_user");
-        driver.findElement(By.xpath("//*[@placeholder='Password']")).sendKeys("secret_sauce");
-        driver.findElement(By.cssSelector("[data-test='login-button']")).click();
-        String title = driver.findElement(By.cssSelector("[data-test='title']")).getText();
-        assertEquals(title, "Products");
+        loginPage.open();
+        loginPage.login("standard_user", "secret_sauce");
+
+        assertEquals(productsPage.getTitle(), "Products");
     }
 
-    @Test
-    public void checkIncorrectLogin() {
-        driver.get("https://www.saucedemo.com/");
-        driver.findElement(By.cssSelector("[id='user-name']")).sendKeys("locked_out_user");
-        driver.findElement(By.xpath("//*[@placeholder='Password']")).sendKeys("secret_sauce");
-        driver.findElement(By.cssSelector("[data-test='login-button']")).click();
-        boolean isErrorMsDisplayed = driver.findElement(By.xpath("//*[@data-test='error']")).isDisplayed();
-        assertTrue(isErrorMsDisplayed, "The error message fails to appear");
-        String title = driver.findElement(By.xpath("//h3[contains(text(), 'Epic sadface')]")).getText();
-        assertEquals(title, "Epic sadface: Sorry, this user has been locked out.");
+    @Test(dataProvider = "incorrectData")
+    public void checkLockedUserIncorrectLogin(String user, String password, String errorMessage) {
+        loginPage.open();
+        loginPage.login(user, password);
+
+        assertTrue(loginPage.isErrorMsDisplayed(), "The error message fails to appear");
+        assertEquals(loginPage.getErrorMessage(), errorMessage);
+    }
+
+    @DataProvider(name = "incorrectData")
+    public Object[][] loginData() {
+        return new Object[][]{
+                {"locked_out_user", "secret_sauce", "Epic sadface: Sorry, this user has been locked out."},
+                {"", "secret_sauce", "Epic sadface: Username is required"},
+                {"standard_user", "", "Epic sadface: Password is required"},
+                {"Standard_user", "secret_sauce", "Epic sadface: Username and password do not match any user in this service"}
+        };
     }
 }
