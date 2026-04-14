@@ -6,7 +6,7 @@ import org.openqa.selenium.WebDriver;
 public class LoginPage extends BasePage {
     private final By userField = By.cssSelector("[id='user-name']");
     private final By passwordField = By.xpath("//*[@placeholder='Password']");
-    private final By submitButton = By.cssSelector("[data-test='login-button']");
+    private final By submitButton = By.cssSelector(DATA_TEST_PATTERN.formatted("login-button"));
     private final By errorMessage = By.xpath("//*[@data-test='error']");
     private final By errorMsgTxt = By.xpath("//h3[contains(text(), 'Epic sadface')]");
 
