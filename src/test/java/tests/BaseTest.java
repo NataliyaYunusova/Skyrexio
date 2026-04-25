@@ -8,6 +8,7 @@ import org.testng.annotations.BeforeMethod;
 import pages.CartPage;
 import pages.LoginPage;
 import pages.ProductsPage;
+import utils.PropertyReader;
 
 import java.time.Duration;
 
@@ -16,6 +17,8 @@ public class BaseTest {
     LoginPage loginPage;
     ProductsPage productsPage;
     CartPage cartPage;
+    String user;
+    String password;
 
     @BeforeMethod
     public void setup() {
@@ -29,6 +32,9 @@ public class BaseTest {
         loginPage = new LoginPage(driver);
         productsPage = new ProductsPage(driver);
         cartPage = new CartPage(driver);
+
+        user = PropertyReader.getProperty("skyrexio.user");
+        password = PropertyReader.getProperty("skyrexio.password");
     }
 
     @AfterMethod
