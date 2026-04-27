@@ -5,15 +5,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Optional;
-import org.testng.annotations.Parameters;
+import org.testng.annotations.*;
 import pages.CartPage;
 import pages.LoginPage;
 import pages.ProductsPage;
 import pages.YourInformationPage;
-import utils.PropertyReader;
 
 import java.time.Duration;
 
@@ -22,8 +18,6 @@ public class BaseTest {
     LoginPage loginPage;
     ProductsPage productsPage;
     CartPage cartPage;
-    String user;
-    String password;
     YourInformationPage yourInformationPage;
 
     @Parameters({"browser"})
@@ -45,9 +39,6 @@ public class BaseTest {
         productsPage = new ProductsPage(driver);
         cartPage = new CartPage(driver);
         yourInformationPage = new YourInformationPage(driver);
-
-        user = PropertyReader.getProperty("skyrexio.user");
-        password = PropertyReader.getProperty("skyrexio.password");
     }
 
     @AfterMethod
