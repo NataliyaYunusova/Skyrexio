@@ -1,7 +1,7 @@
 package pages;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
+import io.qameta.allure.Step;
+import org.openqa.selenium.*;
 import user.User;
 
 public class LoginPage extends BasePage {
@@ -15,20 +15,24 @@ public class LoginPage extends BasePage {
         super(driver);
     }
 
+    @Step("Открыть сайт saucedemo")
     public void open() {
         driver.get(BASE_URL);
     }
 
+    @Step("Выполнить вход в сиситему под пользователем {user.login}")
     public void login(User user) {
         driver.findElement(userField).sendKeys(user.getLogin());
         driver.findElement(passwordField).sendKeys(user.getPassword());
         driver.findElement(submitButton).click();
     }
 
+    @Step("Проверить отображение сообщения об ошибке")
     public boolean isErrorMsDisplayed() {
         return driver.findElement(errorMessage).isDisplayed();
     }
 
+    @Step("Получить текст сообщения об ошибке")
     public String getErrorMessage() {
         return driver.findElement(errorMsgTxt).getText();
     }

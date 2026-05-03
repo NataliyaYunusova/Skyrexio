@@ -1,13 +1,17 @@
 package tests;
 
+import io.qameta.allure.*;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.*;
 import static user.UserFactory.withAdminPermission;
 
+@Epic("Оформление заказа")
+@Feature("Checkout: Your Information")
 public class YourInformationTest extends BaseTest {
 
-    @Test
+    @Story("Успешное заполнение формы и завершение заказа")
+    @Test(description = "Проверка полного оформления заказа с валидными данными")
     public void checkGoodsInYourInformation() {
         loginPage.open();
         loginPage.login(withAdminPermission());
@@ -21,7 +25,8 @@ public class YourInformationTest extends BaseTest {
         assertEquals(yourInformationPage.getTitle(), "Checkout: Complete!");
     }
 
-    @Test
+    @Story("Проверка валидации обязательных полей")
+    @Test(description = "Проверка ошибки при пустых полях формы")
     public void emptyFieldsInYourInformation() {
         loginPage.open();
         loginPage.login(withAdminPermission());

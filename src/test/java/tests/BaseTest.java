@@ -1,15 +1,13 @@
 package tests;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.annotations.*;
-import pages.CartPage;
-import pages.LoginPage;
-import pages.ProductsPage;
-import pages.YourInformationPage;
+import pages.*;
 
 import java.time.Duration;
 
@@ -20,6 +18,7 @@ public class BaseTest {
     CartPage cartPage;
     YourInformationPage yourInformationPage;
 
+    @Step("Открыть браузер")
     @Parameters({"browser"})
     @BeforeMethod
     public void setup(@Optional("chrome") String browser) {
@@ -41,6 +40,7 @@ public class BaseTest {
         yourInformationPage = new YourInformationPage(driver);
     }
 
+    @Step("Закрыть браузер")
     @AfterMethod
     public void close() {
         driver.quit();

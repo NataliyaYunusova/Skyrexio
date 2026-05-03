@@ -1,39 +1,53 @@
 package tests;
 
+import io.qameta.allure.*;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import user.User;
 import user.UserFactory;
+import utils.AllureUtils;
 
+import static io.qameta.allure.Allure.step;
 import static org.testng.Assert.*;
 import static user.UserFactory.*;
 
+@Epic("Авторизация")
+@Feature("Login page")
+@Owner("Юнусова Наталья yunusova.nv@gmail.com")
 public class LoginTest extends BaseTest {
 
-    @Test
+    @Severity(SeverityLevel.BLOCKER)
+    @TmsLink("Skyrexio")
+    @Issue("Skyrexio")
+    @Story("Проверка авторизации с корректными данными пользователя")
+    @Test(description = "Проверка авторизации с корректными данными пользователя")
     public void checkLogin() {
         loginPage.open();
         loginPage.login(withAdminPermission());
 
-        assertEquals(productsPage.getTitle(), "Products");
+        AllureUtils.takeScreenshot(driver);
+        assertEquals(productsPage.getTitle(), "Productss");
     }
 
-    @Test(dataProvider = "incorrectData")
-    public void checkLockedUserIncorrectLogin(User user, String errorMessage) {
-        loginPage.open();
-        loginPage.login(user);
+    @Story("Проверка авторизации с некорректными данными пользователя")
+    @Test(dataProvider = "incorrectData", description = "Проверка авторизации с некорректными данными пользователя")
+    public void checkLockedUserIncorrectLogin(String testName, User user, String errorMessage) {
+        step("Тест-кейс: " + testName, () -> {
+            loginPage.open();
+            loginPage.login(user);
 
-        assertTrue(loginPage.isErrorMsDisplayed(), "The error message fails to appear");
-        assertEquals(loginPage.getErrorMessage(), errorMessage);
+            assertTrue(loginPage.isErrorMsDisplayed());
+            assertEquals(loginPage.getErrorMessage(), errorMessage);
+        });
     }
 
-    @DataProvider(name = "incorrectData")
-    public Object[][] loginData() {
-        return new Object[][]{
-                {UserFactory.withLockedPermission(), "Epic sadface: Sorry, this user has been locked out."},
-                {UserFactory.withEmptyLogin(), "Epic sadface: Username is required"},
-                {UserFactory.withEmptyPassword(), "Epic sadface: Password is required"},
-                {UserFactory.withIncorrectPermission(), "Epic sadface: Username and password do not match any user in this service"}
-        };
+        @DataProvider(name = "incorrectData")
+        public Object[][] loginData () {
+            return new Object[][]{
+                    {"Неправильный логин", UserFactory.withLockedPermission(), "Epic sadface: Sorry, this user has been locked out."},
+                    {"Пустой логин", UserFactory.withEmptyLogin(), "Epic sadface: Username is required"},
+                    {"Пустой пароль", UserFactory.withEmptyPassword(), "Epic sadface: Password is required"},
+                    {"Неверные логин и пароль", UserFactory.withIncorrectPermission(), "Epic sadface: Username and password do not match any user in this service"}
+            };
+        }
     }
-}
