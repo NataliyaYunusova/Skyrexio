@@ -5,6 +5,7 @@ import org.testng.annotations.Test;
 
 import java.util.List;
 
+import static enums.TitleNaming.CART;
 import static org.testng.Assert.*;
 import static user.UserFactory.withAdminPermission;
 
@@ -21,8 +22,9 @@ public class ProductsTest extends BaseTest {
     @Story("Добавление товаров в корзину")
     @Test(description = "Проверка добавления нескольких товаров в корзину")
     public void checkGoodsAdded() {
-        loginPage.open();
-        loginPage.login(withAdminPermission());
+        loginPage
+                .open()
+                .login(withAdminPermission());
         assertTrue(productsPage.pageTitleDisplayed());
         assertEquals(productsPage.getGoodsQuantity(), 6);
         for (String goods : goodsList) {
@@ -32,6 +34,6 @@ public class ProductsTest extends BaseTest {
         assertEquals(productsPage.navigationPanel.checkCounterValue(), "4");
         assertEquals(productsPage.navigationPanel.checkCounterColor(), "rgba(226, 35, 26, 1)");
         cartPage.navigationPanel.entranceToCart();
-        assertEquals(cartPage.getTitle(), "Your Cart");
+        assertEquals(cartPage.getTitle(), CART.getDisplayName());
     }
 }

@@ -3,6 +3,7 @@ package tests;
 import io.qameta.allure.*;
 import org.testng.annotations.Test;
 
+import static enums.TitleNaming.*;
 import static org.testng.Assert.*;
 import static user.UserFactory.withAdminPermission;
 
@@ -13,23 +14,25 @@ public class YourInformationTest extends BaseTest {
     @Story("Успешное заполнение формы и завершение заказа")
     @Test(description = "Проверка полного оформления заказа с валидными данными")
     public void checkGoodsInYourInformation() {
-        loginPage.open();
-        loginPage.login(withAdminPermission());
+        loginPage
+                .open()
+                .login(withAdminPermission());
         yourInformationPage.navigationPanel.entranceToCart();
         yourInformationPage.pressCheckout();
-        assertEquals(yourInformationPage.getTitle(), "Checkout: Your Information");
+        assertEquals(yourInformationPage.getTitle(), CHECKOUT.getDisplayName());
         yourInformationPage.fillInformation("Alice", "Selezneva", "12345");
         yourInformationPage.pressContinue();
-        assertEquals(yourInformationPage.getTitle(), "Checkout: Overview");
+        assertEquals(yourInformationPage.getTitle(), CONTINUE.getDisplayName());
         yourInformationPage.pressFinish();
-        assertEquals(yourInformationPage.getTitle(), "Checkout: Complete!");
+        assertEquals(yourInformationPage.getTitle(), FINISH.getDisplayName());
     }
 
     @Story("Проверка валидации обязательных полей")
     @Test(description = "Проверка ошибки при пустых полях формы")
     public void emptyFieldsInYourInformation() {
-        loginPage.open();
-        loginPage.login(withAdminPermission());
+        loginPage
+                .open()
+                .login(withAdminPermission());
         yourInformationPage.navigationPanel.entranceToCart();
         yourInformationPage.pressCheckout();
         assertEquals(yourInformationPage.getTitle(), "Checkout: Your Information");
