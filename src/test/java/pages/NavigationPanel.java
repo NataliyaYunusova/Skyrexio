@@ -1,7 +1,7 @@
 package pages;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
+import io.qameta.allure.Step;
+import org.openqa.selenium.*;
 
 import static pages.BasePage.DATA_TEST_PATTERN;
 
@@ -14,14 +14,17 @@ public class NavigationPanel {
         this.driver = driver;
     }
 
+    @Step("Перейти в корзину")
     public void entranceToCart() {
         driver.findElement(cartLink).click();
     }
 
+    @Step("Получить значение счетчика товаров в корзине")
     public String checkCounterValue() {
         return driver.findElement(cartBadge).getText();
     }
 
+    @Step("Получить цвет значка корзины")
     public String checkCounterColor() {
         return driver.findElement(cartBadge).getCssValue("background-color");
     }

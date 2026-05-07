@@ -1,7 +1,7 @@
 package pages;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
+import io.qameta.allure.Step;
+import org.openqa.selenium.*;
 
 public class ProductsPage extends BasePage {
     public static final String ADD_TO_CART_PATTERN =
@@ -13,23 +13,28 @@ public class ProductsPage extends BasePage {
         super(driver);
     }
 
+    @Step("Получить заголовок страницы")
     public String getTitle() {
         return driver.findElement(pageTitle).getText();
     }
 
+    @Step("Добавить первый товар в корзину")
     public void addToCart() {
         driver.findElements(addToCartButton).get(0).click();
     }
 
-    public void addToCart(final String goodsName) {
+    @Step("Добавить товар '{goodsName}' в корзину")
+        public void addToCart(final String goodsName) {
         By addToCart = By.xpath(ADD_TO_CART_PATTERN.formatted(goodsName));
         driver.findElement(addToCart).click();
     }
 
+    @Step("Получить количество товаров на странице")
     public int getGoodsQuantity() {
         return driver.findElements(addToCartButton).size();
     }
 
+    @Step("Проверить, что заголовок страницы отображается")
     public boolean pageTitleDisplayed() {
         return driver.findElement(pageTitle).isDisplayed();
     }

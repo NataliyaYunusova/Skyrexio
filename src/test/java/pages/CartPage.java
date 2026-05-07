@@ -1,8 +1,7 @@
 package pages;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import io.qameta.allure.Step;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import java.util.ArrayList;
@@ -17,6 +16,7 @@ public class CartPage extends BasePage {
         super(driver);
     }
 
+    @Step("Получить список названий товаров из корзины")
     public ArrayList<String> getProductsNames() {
         wait.until(ExpectedConditions.visibilityOfElementLocated(continueShoppingButton));
         List<WebElement> allProducts = driver.findElements(product);
@@ -27,6 +27,7 @@ public class CartPage extends BasePage {
         return names;
     }
 
+    @Step("Получить заголовок страницы")
     public String getTitle() {
         return driver.findElement(pageTitle).getText();
     }
